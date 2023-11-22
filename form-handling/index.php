@@ -51,11 +51,26 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Password</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Display Records -->
-                
+
+                <tr>
+                    <td>Awais</td>
+                    <td>a@gmail.com</td>
+                    <td>test123</td>
+                    <td>
+                        <a href="edit.php?id='<?php echo $obj['id']; ?>'">
+                            <button class="btn btn-info btn-sm">Edit</button>
+                        </a>
+                        <form action="#" method="POST">
+                            <button type="submit" name="deleteBtn" value="<?php echo $obj['id']; ?>" class="btn btn-info btn-sm mx-2">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+               
                 <?php
                     foreach($records as $obj)
                     {
@@ -63,6 +78,10 @@
                         $html .= "<td>".$obj['name']."</td>";
                         $html .= "<td>".$obj['email']."</td>";
                         $html .= "<td>".$obj['password']."</td>";
+                        $html .= '<td class="d-flex">';
+                        $html .= '<a href="edit.php?id='.$obj['id'].'"><button class="btn btn-info btn-sm">Edit</button></a>';
+                        $html .= '<form action="#" method="POST"><button type="submit" name="deleteBtn" value="'.$obj['id'].'" class="btn btn-info btn-sm mx-2">Delete</button></form>';
+                        $html .= "</td>";
                         $html .= "</tr>";
 
                         echo $html;
@@ -115,6 +134,17 @@
         // header("Location: index.php");
         
         echo "<script>window.open('index.php', '_self')</script>";
+    }
+
+    // Delete Record
+    if(isset($_POST['deleteBtn']))
+    {
+        $id = $_POST['deleteBtn'];
+        
+        $query = $con->prepare("DELETE FROM users WHERE id='$id'");
+        $query->execute();
+
+        echo "<script>window.open('index.php','_self')</script>";
     }
 
 ?>
